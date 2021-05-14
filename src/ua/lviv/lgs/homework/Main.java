@@ -1,21 +1,30 @@
+
 package ua.lviv.lgs.homework;
 
 import java.util.Scanner;
 
+/**
+ * Class Main allows to run different tasks.
+ * 
+ * @author Dmytro
+ * @version 1.02
+ */
+
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws WrongInputConsoleParametersExeption {
 		Months[] months = Months.values();
 		Scanner sc = new Scanner(System.in);
+		boolean session = true;
+		while (session) {
+			menu();					
 
-		while (true) {
-			menu();
-			switch (sc.next()) {
+			switch (sc.next()) {			
 
 			case "1": {
 				System.out.println("Enter name of month: ");
 				String month = sc.next();
-				boolean flag = checkIfExixts(months, month);
+				checkIfExixts(months, month);
 				break;
 			}
 			case "2": {
@@ -31,7 +40,13 @@ public class Main {
 				}
 				System.out.println();
 				if (!flag) {
-					System.out.println("There is no such season. \n");
+					try {
+						String mess = "\nThere is no such season. \n";
+						throw new WrongInputConsoleParametersExeption(mess); // Throws exeption when wrong input is
+																				// made. Program continues to run.
+					} catch (WrongInputConsoleParametersExeption e) {
+						System.err.println(e.getMessage());
+					}
 
 				}
 				break;
@@ -47,7 +62,14 @@ public class Main {
 					}
 				}
 				if (!flag) {
-					System.out.println("Enter correct number of days.\n");
+					try {
+						String mess = "Enter correct number of days.\n";
+						throw new WrongInputConsoleParametersExeption(mess); // Throws exeption when wrong input is
+																				// made. Program continues to run.
+					} catch (WrongInputConsoleParametersExeption e) {
+						System.err.println(e.getMessage());
+					}
+
 				}
 				break;
 			}
@@ -62,8 +84,13 @@ public class Main {
 					}
 				}
 				if (!flag && days != 28) {
-					System.out.println(
-							"There are no months with lower quantity of days, or you dummy entered wrong number.");
+					try {
+						String mess = "\nThere are no months with lower quantity of days,\n or you dummy entered wrong number.";
+						throw new WrongInputConsoleParametersExeption(mess); // Throws exeption when wrong input is
+																				// made. Program continues to run.
+					} catch (WrongInputConsoleParametersExeption exp) {
+						System.err.println(exp.getMessage());
+					}
 				}
 				if (days == 28) {
 					System.out.println("There are no months with lower quantity of days than 28.\n");
@@ -81,9 +108,16 @@ public class Main {
 					}
 				}
 				if (!flag && days != 31) {
-					System.out.println(
-							"There are no months with bigger quantity of days, or you dummy entered wrong number.");
+					try {
+						String mess = "There are no months with bigger quantity of days, or you dummy entered wrong number.";
+						throw new WrongInputConsoleParametersExeption(mess); // Throws exeption when wrong input is
+																				// made. Program continues to run.
+					} catch (WrongInputConsoleParametersExeption exp) {
+						System.err.println(exp.getMessage());
+					}
+
 				}
+
 				if (days == 31) {
 					System.out.println("There are no months with bigger quantity of days than 31.\n");
 				}
@@ -143,7 +177,10 @@ public class Main {
 				if (flag) {
 					System.out.println("Yes, this month has even number of days.");
 				} else if (!flag) {
-					System.out.println("There is no such month. \n");
+					String mess = "\nThere is no such month. \n";
+					throw new WrongInputConsoleParametersExeption(mess); // Throws exeption when wrong input is made.
+																			// Program stops execution.
+
 				} else {
 					System.out.println("No, this month has uneven number of days.");
 
@@ -153,11 +190,19 @@ public class Main {
 			default: {
 				System.out.println("      PLEASE ENTER A NUMBER FROM THE LIST BELOW         \n");
 			}
+			case "10": {
+				session = false;
+				sc.close();
+			}
+
 			}
 		}
 
 	}
 
+	/**
+	 * Checks if entered month has even days or not.
+	 */
 	public static void hasEvenDays(Months[] months) {
 		for (Months months2 : months) {
 			if (months2.getDays() % 2 == 0) {
@@ -166,6 +211,13 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Checks if month exists
+	 * 
+	 * @param months, values from array month from enum.
+	 * @param month,  value from scanner.
+	 * @return boolean.
+	 */
 	private static boolean checkIfExixts(Months[] months, String month) {
 		boolean flag = false;
 		for (Months months2 : months) {
@@ -176,11 +228,20 @@ public class Main {
 
 		}
 		if (!flag) {
-			System.out.println("There is no such month. \n");
+			try {
+				String mess = "There is no such month. \n";
+				throw new WrongInputConsoleParametersExeption(mess);
+			} catch (WrongInputConsoleParametersExeption e) {
+
+				System.err.println(e.getMessage());
+			}
 		}
 		return flag;
 	}
 
+	/**
+	 * Prints menu with options for choosing.
+	 */
 	static void menu() {
 		System.out.println("Press 1 to check if month exists.");
 		System.out.println("Press 2 to see all months from season.");
@@ -191,6 +252,7 @@ public class Main {
 		System.out.println("Press 7 to see months that have even number of days");
 		System.out.println("Press 8 to see months that have uneven number of days.");
 		System.out.println("Press 9 to see months that have uneven number of days.");
+		System.out.println("Press 10 to exit.");
 
 	}
 }

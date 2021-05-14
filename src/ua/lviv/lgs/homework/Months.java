@@ -1,5 +1,10 @@
 package ua.lviv.lgs.homework;
-
+/**
+ * List of months
+ * @author Dmytro
+ * @version 1
+ *
+ */
 public enum Months {
 
 	JANUARY(Seasons.WINTER, 31),
