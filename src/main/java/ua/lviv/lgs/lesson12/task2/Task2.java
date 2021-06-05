@@ -66,6 +66,7 @@ public class Task2 {
     }
 
     static Car getRandomEngine() {
+
         Engine engine = new Engine();
         engine.setYearOfProduction(randomInt(2020));
         engine.setHorsePowers(randomInt(500));
