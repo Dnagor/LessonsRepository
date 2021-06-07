@@ -23,7 +23,7 @@ public class Deputy extends Human {
         this.name = name;
     }
 
-    public boolean isBriber() {
+    public boolean getBriber() {
         return briber;
     }
 
@@ -57,14 +57,17 @@ public class Deputy extends Human {
     }
 
     public void giveBribe(int amount) {
-        if (!briber) {
+        amountOfBribe = amountOfBribe + amount;
+        if (briber == false) {
             System.out.println("Цей депутат не бере хабарів.");
         } else System.out.println("Сума хабара: " + amountOfBribe);
         if (amountOfBribe > 5000) {
-            System.out.println("Поліція ув'язнить депутата.");
-        } else amountOfBribe = amountOfBribe+amount;
+            System.out.println("Поліція заарештує депутата.");
+        } else amountOfBribe = amountOfBribe + amount;
 
     }
 
-
+    public boolean isBriber() {
+       return this.briber;
+    }
 }

@@ -1,6 +1,5 @@
 package ua.lviv.lgs.lesson13.task1;
 
-import com.sun.org.apache.bcel.internal.generic.FCMPG;
 
 import java.util.*;
 
@@ -11,7 +10,6 @@ public class Faction {
 
     public Faction(String name) {
         this.name = name;
-
     }
 
     public List<Deputy> getDeputies() {
@@ -31,25 +29,25 @@ public class Faction {
     }
 
 
+
     public void giveBribe(int bribe, String deputyName, String deputyLastName) {
         for (Deputy deputy : deputies) {
             if (deputy.getName().equalsIgnoreCase(deputyName) && deputy.getLastName().equalsIgnoreCase(deputyLastName)) {
                 deputy.giveBribe(bribe);
-                return;
             }
         }
     }
 
-    public void removeDeputy(List<Deputy> deputyList) {
-        ListIterator<Deputy> listIterator = deputyList.listIterator();
+    public void removeDeputy() {
         System.out.println("Введіть прізвище депутата:");
         String lastName = scanner.readString();
         System.out.println("Введіть ім'я депутата:");
         String name = scanner.readString();
-        while (listIterator.hasNext()) {
-            Deputy next = listIterator.next();
-            if (next.getLastName().equalsIgnoreCase(lastName) && next.getName().equalsIgnoreCase(name)) {
-                listIterator.remove();
+        ListIterator<Deputy> deputyListIterator = deputies.listIterator();
+        while (deputyListIterator.hasNext()){
+            Deputy next = deputyListIterator.next();
+            if(next.getName().equalsIgnoreCase(name)&&next.getLastName().equalsIgnoreCase(lastName)){
+                deputyListIterator.remove();
             }
         }
     }
@@ -68,40 +66,18 @@ public class Faction {
         deputies.add(new Deputy(lastName,name,weight,height,bribe));
     }
 
-    public void printAllBribers(List<Deputy> deputyList) {
-        ListIterator<Deputy> listIterator = deputyList.listIterator();
-        while (listIterator.hasNext()) {
-            Deputy next = listIterator.next();
-            if (next.isBriber()) {
-                System.out.println(next);
+    public void printAllBribers() {
+        for (Deputy deputy : deputies) {
+            if(deputy.isBriber()){
+                System.out.println(deputy.toString());
             }
+            
         }
     }
 
-    public void printBiggestBriber(List<Deputy> deputyList) {
-        Collections.sort(deputyList, new DepytyBribeComparator());
-        System.out.println(deputyList.get(1));
-    }
 
-    public void printAllDeputies(List<Deputy> deputyList) {
-        ListIterator<Deputy> listIterator = deputyList.listIterator();
-        while (listIterator.hasNext()) {
-            Deputy next = listIterator.next();
-            System.out.println(next);
-        }
-    }
-
-    public void removeAllDeputies(Faction faction) {
-        Iterator<Deputy> iterator = faction.getDeputies().iterator();
-        while (iterator.hasNext()) {
-            iterator.remove();
-        }
-//        System.out.println( faction.getDeputies());
-//        ListIterator<Deputy> listIterator = deputyList.listIterator();
-//        while (listIterator.hasNext()) {
-//            Deputy next = listIterator.next();
-//            System.out.println(next);
-//        }
+    public void removeAllDeputies() {
+        deputies = new ArrayList<>();
     }
 
     @Override
@@ -112,5 +88,14 @@ public class Faction {
                 '}';
     }
 
+//    public void findBiggestBriber(){
+//        ListIterator<Deputy> deputyListIterator = deputies.listIterator();
+//        Deputy next = deputyListIterator.next();
+//        while (deputyListIterator.hasNext()){
+//            if(next.getAmountOfBribe()>next)
+//
+//    }
+//
+//    }
 
 }

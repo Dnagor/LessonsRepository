@@ -21,11 +21,12 @@ public class ConsoleScanner implements Scanner {
 
     @Override
     public String readString() {
+        scanner = new java.util.Scanner(System.in);
         while (true) {
             if (scanner.hasNextLine()) {
                 return scanner.nextLine();
             } else {
-                System.out.println("Incorrect format(int)! Try again!");
+                System.out.println("Incorrect format(String)! Try again!");
                 scanner.next();
             }
         }
@@ -35,10 +36,13 @@ public class ConsoleScanner implements Scanner {
     public boolean readStringBribe() {
         System.out.println("Введіть Так або Ні");
         while (true){
-            if (readString().equalsIgnoreCase("так")){
+            String input = readString();
+            if (input.equalsIgnoreCase("так")){
                 return true;
-            }else if (readString().equalsIgnoreCase("ні")){
+            }else if (input.equalsIgnoreCase("ні")){
                 return false;
+            }else{
+                readStringBribe();
             }
         }
     }
