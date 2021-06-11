@@ -48,6 +48,7 @@ public class Test {
         result2 = JsonPath.read(testJson,"$.websites[1].rozetka.books[1].bookTitle");
         System.out.println(result);
         System.out.println(result2);
+
     }
 
     @org.testng.annotations.Test
@@ -59,5 +60,6 @@ public class Test {
     public void negativeTest(){
         testData();
         Assert.assertNotEquals(result2,expectedResult2);
+
     }
 }

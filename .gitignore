@@ -20,3 +20,5 @@
 /bin/
 /.metadata/
 .idea/
+lib/
+*.exe
