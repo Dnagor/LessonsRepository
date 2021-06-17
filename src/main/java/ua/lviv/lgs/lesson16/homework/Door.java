@@ -15,7 +15,6 @@ public class Door extends ArchitectureElements implements Serializable, Comparab
         this.color = color;
         this.width = width;
     }
-
     public Door(String style, double height) {
         this.style = style;
         this.height = height;
