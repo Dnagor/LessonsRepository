@@ -30,15 +30,6 @@ public class VerkhovnaRada {
 
     Scanner scanner = new ConsoleScanner();
 
-//    public void giveBribe(int bribe, String deputyName, String deputyLastName, String factionName) {
-//        for (Faction faction : factions) {
-//            if (faction.getName().equalsIgnoreCase(factionName)) {
-//                faction.giveBribe(bribe, deputyName, deputyLastName);
-//            }
-//
-//        }
-//
-//    }
     public Faction searchForFaction(String factionName){
         for (Faction fact : factions) {
             if (fact.getName().equalsIgnoreCase(factionName)) {
