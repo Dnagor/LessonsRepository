@@ -1,16 +1,45 @@
 package ua.lviv.lgs.lesson22.homework;
 
-public class Pet {
+public abstract class Pet {
+    abstract void voiceClass();
+
     public static void main(String[] args) {
         Sound cow = message -> System.out.println(message);
         Sound cat = message -> System.out.println(message);
         Sound dog = message -> System.out.println(message);
-        cow.voice("Я корова!");
-        dog.voice("Я пес!");
-        cat.voice("Я кіт!");
+        Pet pet = new Dog();
+        Pet pet1 = new Cat();
+        Pet pet2 = new Cow();
+        dog.voiceInterface("Я пес!");
+        pet.voiceClass();
+        cat.voiceInterface("Я кіт!");
+        pet1.voiceClass();
+        cow.voiceInterface("Я корова!");
+        pet2.voiceClass();
     }
 }
+@FunctionalInterface
 interface Sound{
-    void voice(String message);
+    void voiceInterface(String message);
 }
+class Dog extends Pet{
 
+    @Override
+    void voiceClass() {
+        System.out.println("ГавГав!");
+    }
+}
+class Cat extends Pet{
+
+    @Override
+    void voiceClass() {
+        System.out.println("МяуМяу!");
+    }
+}
+class Cow extends Pet{
+
+    @Override
+    void voiceClass() {
+        System.out.println("МуМуМу!");
+    }
+}
