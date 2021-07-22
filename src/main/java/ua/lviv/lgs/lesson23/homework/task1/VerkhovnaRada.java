@@ -3,6 +3,8 @@ package ua.lviv.lgs.lesson23.homework.task1;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public class VerkhovnaRada {
     private static VerkhovnaRada instance;
@@ -27,15 +29,23 @@ public class VerkhovnaRada {
         this.factions = factions;
     }
 
-    Scanner scanner = new ConsoleScanner();
-
-    public Faction searchForFaction(String factionName){
-        for (Faction fact : factions) {
-            if (fact.getName().equalsIgnoreCase(factionName)) {
-                return fact;
+    Supplier<String> readString = () -> {
+        java.util.Scanner sc = new java.util.Scanner(System.in);
+        while (true) {
+            if (sc.hasNextLine()) {
+                return sc.nextLine();
+            } else {
+                System.out.println("Incorrect format(String)! Try again!");
+                sc.next();
             }
         }
-        return null;
+    };
+
+    public Faction searchForFaction(String factionName){
+        Optional<Faction> matchingObject = factions.stream().
+                filter(p -> p.getName().equals(factionName)).
+                findFirst();
+        return matchingObject.get();
     }
     public void addFaction(Faction faction) {
         factions.add(faction);
@@ -61,103 +71,71 @@ public class VerkhovnaRada {
                     + "Введіть 7 щоб видалити депутата з фракції\n"
                     + "Введіть 8 щоб вивести список хабарників\n"
                     + "Введіть 9 щоб дати хабар\n"
-                    + "Введіть 10 щоб вивести найбільшого хабарника\n"
-                    + "Ведіть 0 щоб завершити програму.\n"
+                    + "Введіть 0 щоб завершити програму.\n"
             );
-            switch (scanner.readString()) {
+            switch (readString.get()) {
                 case "1": {
                     System.out.println("Введіть назву фракції:");
-                    String factionName = scanner.readString();
+                    String factionName = readString.get();
                     addFaction(new Faction(factionName));
                     System.out.println("Фракцію " + factionName + " додано.");
+
                     break;
                 }
                 case "2": {
                     System.out.println("Ведіть назву фракції яку треба видалити:");
-                    String factionName = scanner.readString();
-                    Iterator<Faction> iterator = factions.iterator();
-                    while (iterator.hasNext()) {
-                        Faction next = iterator.next();
-                        if (next.getName().equalsIgnoreCase(factionName)) {
-                            iterator.remove();
-                            System.out.println("Фракцію " + next.getName() + " видалено з Верховної Ради.");
-                        }
-                    }
+                    String factionName = readString.get();
+                    factions.removeIf(faction -> faction.getName().equals(factionName));
                     break;
                 }
                 case "3": {
                     System.out.println("Список фракцій Верховної ради:");
-                    for (Faction fact : factions) {
-                        System.out.println(fact);
-                    }
+                    factions.stream().forEach(faction -> System.out.println(faction));
 
                     break;
                 }
                 case "4": {
                     System.out.println("Введіть назву фракції з якої видалити всіх депутатів:");
-                    String factionName = scanner.readString();
+                    String factionName = readString.get();
                     searchForFaction(factionName).removeAllDeputies();
                     break;
                 }
                 case "5": {
-                    System.out.println("Введіть 5 щоб вевести конкретну фракцію");
-                    String factionName = scanner.readString();
-                    for (Faction fact : factions) {
-                        if (fact.getName().equalsIgnoreCase(factionName)) {
-                            System.out.println(fact);
-                        }
-                    }
+                    System.out.println("Введіть назву фракції яку вивести");
+                    String factionName = readString.get();
+                    factions.stream().filter(faction -> faction.getName().equalsIgnoreCase(factionName)).forEach(System.out::println);
                     break;
                 }
                 case "6": {
                     System.out.println("Введіть назву фракції в яку додати депутата:");
-                    String factionName = scanner.readString();
-                    for (Faction fact : factions) {
-                        if (fact.getName().equalsIgnoreCase(factionName)) {
-                            fact.addDeputy();
-                        }
-                        System.out.println();
-                    }
+                    String factionName = readString.get();
+                    factions.stream().filter(faction -> faction.getName().equalsIgnoreCase(factionName)).forEach(faction -> faction.addDeputy());
                     break;
                 }
                 case "7":{
                     System.out.println("Введіть назву фракції з якої видалити депутата:");
-                    String factionName = scanner.readString();
+                    String factionName = readString.get();
                     searchForFaction(factionName).removeDeputy();
                     break;
                 }
                 case "8": {
                     System.out.println("Введіть назву фракції в якій шукаєте хабарника:");
-                    String factionName = scanner.readString();
-                    for (Faction fact : factions) {
-                        if (fact.getName().equalsIgnoreCase(factionName)) {
-                            fact.printAllBribers();
-                        }
-                    }
+                    String factionName = readString.get();
+                    factions.stream().filter(faction -> faction.getName().equalsIgnoreCase(factionName)).forEach(Faction::printAllBribers);
                     break;
                 }
                 case "9":{
                     System.out.println("Введіть фракцію в якій депутат, якому дати хабар:");
-                    String factionName = scanner.readString();
+                    String factionName = readString.get();
                     System.out.println("Введіть прізвище депутата хабарника:");
-                    String lastName = scanner.readString();
+                    String lastName = readString.get();
                     System.out.println("Введіть ім'я депутата хабарника:");
-                    String name = scanner.readString();
+                    String name = readString.get();
                     System.out.println("Введіть суму хабара:");
-                    int bribe = Integer.parseInt(scanner.readString());
+                    int bribe = Integer.parseInt(readString.get());
                     searchForFaction(factionName).giveBribe(bribe,name,lastName);
-
                     break;
                 }
-//                case "10":{
-//                    System.out.println("Найбільший хабарник це:");
-//                    for (Faction fact: factions) {
-//                        fasct
-//
-//                    }
-//
-//                    break;
-//                }
                 case "0": {
                     flag = false;
                     System.out.println("Введіть 0 щоб завершити програму.");

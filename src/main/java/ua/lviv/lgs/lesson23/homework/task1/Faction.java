@@ -3,12 +3,22 @@ package ua.lviv.lgs.lesson23.homework.task1;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.function.Supplier;
 
 public class Faction {
+    Supplier<String> readString = () -> {
+        java.util.Scanner sc = new java.util.Scanner(System.in);
+        while (true) {
+            if (sc.hasNextLine()) {
+                return sc.nextLine();
+            } else {
+                System.out.println("Incorrect format(String)! Try again!");
+                sc.next();
+            }
+        }
+    };
     private String name;
     private List<Deputy> deputies = new ArrayList<>();
-    Scanner scanner = new ConsoleScanner();
 
     public Faction(String name) {
         this.name = name;
@@ -31,50 +41,38 @@ public class Faction {
     }
 
 
-
     public void giveBribe(int bribe, String deputyName, String deputyLastName) {
-        for (Deputy deputy : deputies) {
+        deputies.stream().forEach(deputy -> {
             if (deputy.getName().equalsIgnoreCase(deputyName) && deputy.getLastName().equalsIgnoreCase(deputyLastName)) {
                 deputy.giveBribe(bribe);
             }
-        }
+        });
     }
 
     public void removeDeputy() {
         System.out.println("Введіть прізвище депутата:");
-        String lastName = scanner.readString();
+        String lastName = readString.get();
         System.out.println("Введіть ім'я депутата:");
-        String name = scanner.readString();
-        ListIterator<Deputy> deputyListIterator = deputies.listIterator();
-        while (deputyListIterator.hasNext()){
-            Deputy next = deputyListIterator.next();
-            if(next.getName().equalsIgnoreCase(name)&&next.getLastName().equalsIgnoreCase(lastName)){
-                deputyListIterator.remove();
-            }
-        }
+        String name = readString.get();
+        deputies.removeIf(deputy -> deputy.getName().equalsIgnoreCase(name) && deputy.getLastName().equalsIgnoreCase(lastName));
     }
 
     public void addDeputy() {
         System.out.println("Введіть прізвище депутата:");
-        String lastName = scanner.readString();
+        String lastName = readString.get();
         System.out.println("Введіть ім'я депутата:");
-        String name = scanner.readString();
+        String name = readString.get();
         System.out.println("Введіть вагу депутата:");
-        int weight = scanner.readInt();
+        int weight = Integer.parseInt(readString.get());
         System.out.println("Введіть зріст депутата:");
-        int height = scanner.readInt();
+        int height = Integer.parseInt(readString.get());
         System.out.println("Вкажіть чи депутат бере хабарі:");
-        boolean bribe = scanner.readStringBribe();
-        deputies.add(new Deputy(lastName,name,weight,height,bribe));
+        boolean bribe = readStringBribe();
+        deputies.add(new Deputy(lastName, name, weight, height, bribe));
     }
 
     public void printAllBribers() {
-        for (Deputy deputy : deputies) {
-            if(deputy.isBriber()){
-                System.out.println(deputy.toString());
-            }
-            
-        }
+        deputies.stream().filter(deputy -> deputy.isBriber()).forEach(System.out::println);
     }
 
 
@@ -90,6 +88,18 @@ public class Faction {
                 '}';
     }
 
+    public boolean readStringBribe() {
+        System.out.println("Введіть Так або Ні");
+        while (true) {
+            String input = readString.get();
+            if (input.equalsIgnoreCase("так")) {
+                return true;
+            } else if (input.equalsIgnoreCase("ні")) {
+                return false;
+            } else {
+                readStringBribe();
+            }
+        }
 //    public void findBiggestBriber(){
 //        ListIterator<Deputy> deputyListIterator = deputies.listIterator();
 //        Deputy next = deputyListIterator.next();
@@ -100,4 +110,5 @@ public class Faction {
 //
 //    }
 
+    }
 }

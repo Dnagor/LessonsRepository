@@ -60,10 +60,10 @@ public class Deputy extends Human {
         amountOfBribe = amountOfBribe + amount;
         if (briber == false) {
             System.out.println("Цей депутат не бере хабарів.");
-        } else System.out.println("Сума хабара: " + amountOfBribe);
+        } else System.out.println("Сума хабара: " + amount);
         if (amountOfBribe > 5000) {
             System.out.println("Поліція заарештує депутата.");
-        } else amountOfBribe = amountOfBribe + amount;
+        }
 
     }
 
